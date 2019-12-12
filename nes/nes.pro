@@ -19,12 +19,14 @@ SOURCES += \
     economy.cpp \
     main.cpp \
     mainwindow.cpp \
-    nation.cpp
+    nation.cpp \
+    worldmarket.cpp
 
 HEADERS += \
     economy.h \
     mainwindow.h \
-    nation.h
+    nation.h \
+    worldmarket.h
 
 FORMS += \
     mainwindow.ui

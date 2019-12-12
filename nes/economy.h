@@ -15,14 +15,24 @@ public:
     Economy();
     void SetProductionShares(double consumer,double capital);
     void UpdatePopulation(int pop);
-    int IndustrialBase();
-    int ConsumerGoods();
-    int AvailableCapitalGoods();
-    int RawMaterialProduction(RawMaterial);
-    int DevelopedRawMaterials(RawMaterial);
+    int IndustrialBase()const;
+    int AgriculturalBase()const;
+    int ConsumerGoods()const;
+    int CapitalGoods()const;
+    int AvailableCapitalGoods()const;
+    int AgriculturalGoods()const;
+    int RawMaterialProduction(RawMaterial)const;
+    int DevelopedRawMaterials(RawMaterial)const;
+    int EconomySize()const;
+    double PopulationMultiplier()const;
+    double ResourceMultiplier()const;
     void BuildRawMaterialCapacity(RawMaterial,int capital_cost,int development_size);
     void BuildIndustrialCapacity(int capital_cost,int output);
     void DestroyIndustrialCapacity(int output);
+    void BuildAgriculturalCapacity(int capital_cost,int output);
+    void DestroyAgriculturalCapacity(int output);
+    void SetRawMaterialTradeAmount(RawMaterial,int amount);
+    void SetCapitalGoodsTradeAmount(int amount);
     void Run();
 private:
     double consumer_goods_share;
@@ -31,11 +41,22 @@ private:
     std::map<RawMaterial,int> developed_raw_materials;
     std::map<RawMaterial,int> raw_material_output;
     int base_industrial_output;
+    int base_agricultural_output;
     int population;
     bool dirty;
     int resolved_consumer_goods;
     int resolved_capital_goods;
+    int resolved_agricultural_goods;
+    int economy_size;
+    double resource_multiplier;
+    double population_multiplier;
+    //trade variables
+    std::map<RawMaterial,int> raw_material_trades;
+    int capital_goods_trade;
+
     void resolve_output();
+    void calculate_economy_size();
+    void calculate_population_multiplier();
 };
 
 #endif // ECONOMY_H

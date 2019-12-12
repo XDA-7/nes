@@ -3,7 +3,7 @@
 Nation::Nation()
 {
     population = 3600;
-    growth_rate = 0.03;
+    growth_rate = 0.0025;
     unused_land = 360;
     undeveloped_resources = std::map<RawMaterial,int>
     {
@@ -11,22 +11,21 @@ Nation::Nation()
         {RawMaterial::Ore,90000},
         {RawMaterial::Wood,90000}
     };
-    previous_consumer_goods = 0;
-    previous_capital_goods = 0;
+    gold_reserves = 0;
 }
 void Nation::Run()
 {
     population = population + static_cast<int>(population * growth_rate);
     economy.UpdatePopulation(population);
     economy.Run();
-    consumer_goods_change = economy.ConsumerGoods() - previous_consumer_goods;
-    capital_goods_change = economy.AvailableCapitalGoods() - previous_capital_goods;
-    previous_consumer_goods = economy.ConsumerGoods();
-    previous_capital_goods = economy.AvailableCapitalGoods();
 }
 int Nation::Population()
 {
     return population;
+}
+const Economy& Nation::Economy()
+{
+    return economy;
 }
 void Nation::BuildMine()
 {
@@ -64,18 +63,19 @@ bool Nation::CanBuildFactory()
 {
     return unused_land > 0 && economy.AvailableCapitalGoods() > 180;
 }
+void Nation::BuildFarm()
+{
+    --unused_land;
+    economy.BuildAgriculturalCapacity(180,60);
+}
+bool Nation::CanBuildFarm()
+{
+    return unused_land > 0 && economy.AvailableCapitalGoods() > 180;
+}
 void Nation::SetProductionShares(int capital,int consumer)
 {
     double sum = static_cast<double>(capital) + static_cast<double>(consumer);
     economy.SetProductionShares(consumer / sum,capital / sum);
-}
-int Nation::RawMaterialProduction(RawMaterial rm)
-{
-    return economy.RawMaterialProduction(rm);
-}
-int Nation::RawMaterialDeveloped(RawMaterial rm)
-{
-    return economy.DevelopedRawMaterials(rm);
 }
 int Nation::RawMaterialUndeveloped(RawMaterial rm)
 {
@@ -85,23 +85,36 @@ int Nation::UnusedLand()
 {
     return unused_land;
 }
-int Nation::IndustrialBase()
+double Nation::GoldReserves()const
 {
-    return economy.IndustrialBase();
+    return gold_reserves;
 }
-int Nation::ConsumerGoodsProduction()
+void Nation::SetImport(TradeGood good,int good_amount)
 {
-    return economy.ConsumerGoods();
+    import_amounts[good] = good_amount;
 }
-int Nation::ConsumerGoodsChange()
+void Nation::SetExport(TradeGood good,int good_amount)
 {
-    return consumer_goods_change;
+    export_amounts[good] = good_amount;
 }
-int Nation::CapitalGoods()
+double Nation::GetTradeBalance()
 {
-    return economy.AvailableCapitalGoods();
+    double balance = 0.0;
+    for(auto pair : import_amounts)
+    {
+        balance -= world_market.buy_price(pair.first,pair.second);
+    }
+    for(auto pair : export_amounts)
+    {
+        balance += world_market.sell_price(pair.first,pair.second);
+    }
+    return balance;
 }
-int Nation::CapitalGoodsChange()
+bool Nation::CanAffordTrade()
 {
-    return capital_goods_change;
+    return gold_reserves - GetTradeBalance() > 0;
+}
+
+void Nation::conduct_world_trade()
+{
 }
