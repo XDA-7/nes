@@ -1096,6 +1096,58 @@
      <string>0</string>
     </property>
    </widget>
+   <widget class="QLabel" name="food_pc_label">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>330</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Food per capita:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="food_pc">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>330</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="goods_pc_label">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>350</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Goods per capita:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="goods_pc">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>350</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

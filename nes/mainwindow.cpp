@@ -33,7 +33,7 @@ void MainWindow::set_previous_values()
 }
 void MainWindow::refresh_nation_data()
 {
-    ui->population_val->setNum(n.Population());
+    ui->population_val->setNum(n.Population().Total());
     ui->ore_production->setNum(n.Economy().RawMaterialProduction(RawMaterial::Ore));
     ui->oil_production->setNum(n.Economy().RawMaterialProduction(RawMaterial::Oil));
     ui->wood_production->setNum(n.Economy().RawMaterialProduction(RawMaterial::Wood));
@@ -50,6 +50,10 @@ void MainWindow::refresh_nation_data()
     ui->pop_sat->setNum(n.Economy().PopulationMultiplier());
     ui->res_sat->setNum(n.Economy().ResourceMultiplier());
     ui->capital_stock->setNum(n.Economy().AvailableCapitalGoods());
+    ui->gold->setNum(n.GoldReserves());
+
+    ui->food_pc->setNum(n.Population().FoodSatisfaction());
+    ui->goods_pc->setNum(n.Population().GoodsSatisfaction());
 
     change_numeric_value(ui->consumer_goods,ui->consumer_goods_change,n.Economy().ConsumerGoods(),previous_consumer_goods);
     change_numeric_value(ui->capital_goods,ui->capital_goods_change,n.Economy().CapitalGoods(),previous_capital_goods);
@@ -61,6 +65,7 @@ void MainWindow::refresh_nation_data()
     ui->build_factory->setEnabled(n.CanBuildFactory());
     ui->build_farm->setEnabled(n.CanBuildFarm());
 
+    limit_import_range();
     limit_export_range();
 }
 void MainWindow::change_numeric_value(QLabel* value,QLabel* change,int current_value,int previous_value)
@@ -70,12 +75,35 @@ void MainWindow::change_numeric_value(QLabel* value,QLabel* change,int current_v
 }
 void MainWindow::limit_export_range()
 {
+    ui->food_export_price->setNum(n.WorldMarket().SellPrice(TradeGood::Food,1));
+    ui->wood_export_price->setNum(n.WorldMarket().SellPrice(TradeGood::Wood,1));
+    ui->ore_export_price->setNum(n.WorldMarket().SellPrice(TradeGood::Ore,1));
+    ui->oil_export_price->setNum(n.WorldMarket().SellPrice(TradeGood::Oil,1));
+    ui->consumer_export_price->setNum(n.WorldMarket().SellPrice(TradeGood::ConsumerGoods,1));
+    ui->capital_export_price->setNum(n.WorldMarket().SellPrice(TradeGood::CapitalGoods,1));
+
     ui->food_export_quantity->setMaximum(n.Economy().AgriculturalGoods());
     ui->wood_export_quantity->setMaximum(n.Economy().RawMaterialProduction(RawMaterial::Wood));
     ui->ore_export_quantity->setMaximum(n.Economy().RawMaterialProduction(RawMaterial::Ore));
     ui->oil_export_quantity->setMaximum(n.Economy().RawMaterialProduction(RawMaterial::Oil));
     ui->consumer_export_quantity->setMaximum(n.Economy().ConsumerGoods());
     ui->capital_export_quantity->setMaximum(n.Economy().CapitalGoods());
+}
+void MainWindow::limit_import_range()
+{
+    ui->food_import_price->setNum(n.WorldMarket().BuyPrice(TradeGood::Food,1));
+    ui->wood_import_price->setNum(n.WorldMarket().BuyPrice(TradeGood::Wood,1));
+    ui->ore_import_price->setNum(n.WorldMarket().BuyPrice(TradeGood::Ore,1));
+    ui->oil_import_price->setNum(n.WorldMarket().BuyPrice(TradeGood::Oil,1));
+    ui->consumer_import_price->setNum(n.WorldMarket().BuyPrice(TradeGood::ConsumerGoods,1));
+    ui->capital_import_price->setNum(n.WorldMarket().BuyPrice(TradeGood::CapitalGoods,1));
+
+    ui->food_import_quantity->setMaximum(n.GetMaxImportAffordable(TradeGood::Food));
+    ui->wood_import_quantity->setMaximum(n.GetMaxImportAffordable(TradeGood::Wood));
+    ui->ore_import_quantity->setMaximum(n.GetMaxImportAffordable(TradeGood::Ore));
+    ui->oil_import_quantity->setMaximum(n.GetMaxImportAffordable(TradeGood::Oil));
+    ui->consumer_import_quantity->setMaximum(n.GetMaxImportAffordable(TradeGood::ConsumerGoods));
+    ui->capital_import_quantity->setMaximum(n.GetMaxImportAffordable(TradeGood::CapitalGoods));
 }
 void MainWindow::calculate_trade_balance()
 {

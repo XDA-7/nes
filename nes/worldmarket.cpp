@@ -1,7 +1,7 @@
 #include "worldmarket.h"
 
 WorldMarket::WorldMarket()
-    : markup{0.2}
+    : markup{1.2}
 {
     sell_rates[TradeGood::Food] = 1.0;
     sell_rates[TradeGood::Oil] = 1.5;
@@ -11,15 +11,15 @@ WorldMarket::WorldMarket()
     sell_rates[TradeGood::CapitalGoods] = 3.0;
 }
 
-double WorldMarket::buy_price(TradeGood good,int good_amount)const
+double WorldMarket::BuyPrice(TradeGood good,int good_amount)const
 {
     return sell_rates.at(good) * markup * good_amount;
 }
-double WorldMarket::sell_price(TradeGood good,int good_amount)const
+double WorldMarket::SellPrice(TradeGood good,int good_amount)const
 {
     return sell_rates.at(good) * good_amount;
 }
-void WorldMarket::buy(TradeGood good,int good_amount)
+void WorldMarket::Buy(TradeGood good,int good_amount)
 {}
-void WorldMarket::sell(TradeGood good,int good_amount)
+void WorldMarket::Sell(TradeGood good,int good_amount)
 {}

@@ -20,12 +20,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     nation.cpp \
+    population.cpp \
     worldmarket.cpp
 
 HEADERS += \
     economy.h \
     mainwindow.h \
     nation.h \
+    population.h \
     worldmarket.h
 
 FORMS += \

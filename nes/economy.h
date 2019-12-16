@@ -43,8 +43,8 @@ private:
     int base_industrial_output;
     int base_agricultural_output;
     int population;
-    bool dirty;
     int resolved_consumer_goods;
+    int capital_goods_output;
     int resolved_capital_goods;
     int resolved_agricultural_goods;
     int economy_size;
@@ -56,7 +56,7 @@ private:
 
     void resolve_output();
     void calculate_economy_size();
-    void calculate_population_multiplier();
+    double calculate_multiplier(int numerator,int denominator);
 };
 
 #endif // ECONOMY_H

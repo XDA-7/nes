@@ -66,6 +66,7 @@ private:
     void refresh_nation_data();
     void change_numeric_value(QLabel* value,QLabel* change,int current_value,int previous_value);
     void limit_export_range();
+    void limit_import_range();
     void calculate_trade_balance();
 };
 #endif // MAINWINDOW_H

@@ -13,10 +13,10 @@ class WorldMarket
 {
 public:
     WorldMarket();
-    double buy_price(TradeGood,int good_amount)const;
-    double sell_price(TradeGood,int good_amount)const;
-    void buy(TradeGood,int good_amount);
-    void sell(TradeGood,int good_amount);
+    double BuyPrice(TradeGood,int good_amount)const;
+    double SellPrice(TradeGood,int good_amount)const;
+    void Buy(TradeGood,int good_amount);
+    void Sell(TradeGood,int good_amount);
 private:
     double markup;
     std::map<TradeGood,double> sell_rates;
